@@ -1,4 +1,7 @@
-$icons: ();
+$icons : (
+  'arrow': '\e900',
+  'dropdown': '\e901'
+);
 
 @mixin icomoon($icon) {
   @if map-has-key($icons, $icon) {
