@@ -1,0 +1,21 @@
+/* stylelint-disable */
+
+@font-face {
+  font-family: 'icomoon';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../../assets/icons/icomoon.eot');
+  src:
+    url('../../assets/icons/icomoon.woff') format('woff'),
+    url('../../assets/icons/icomoon.eot#iefix') format('embedded-opentype'),
+    url('../../assets/icons/icomoon.ttf') format('truetype'),
+    url('../../assets/icons/icomoon.svg#icomoon') format('svg');
+}
+
+/* stylelint-enable */
+
+@each $icon, $content in $icons {
+  .icon-#{$icon}::before {
+    @include icomoon($icon);
+  }
+}

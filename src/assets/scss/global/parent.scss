@@ -1,0 +1,18 @@
+@mixin parent($element, $modifier) {
+	$selectors : '' + inspect(&) + '';
+	$selectors : str-slice($selectors, 2, (str-length($selectors) - 2)) + ' ';
+	$parent    : $element + ' ';
+	$check     : str-index($selectors, $parent);
+
+	@if ($check) {
+		$selectors : str-insert($selectors, $modifier, ($check + str-length($parent) - 1));
+
+		@at-root #{$selectors} {
+			@content;
+		}
+	} @else {
+		#{$element}#{$modifier} & {
+			@content;
+		}
+	}
+}
