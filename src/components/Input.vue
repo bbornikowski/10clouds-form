@@ -45,7 +45,7 @@ export default Vue.extend({
     emitData({ target: { value } }) {
       this.$emit(
         'input',
-        value,
+        value as string,
       );
     },
   },
@@ -121,7 +121,7 @@ export default Vue.extend({
         border: 2px solid $cBlue01;
       }
 
-      &#{$p}--error {
+      &#{$p}__field--error {
         border: 2px solid $cRed01;
         color: $cRed01;
 

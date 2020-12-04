@@ -9,7 +9,7 @@
     <label
       @click="emitData(placeholder)"
       :for="uniqueID"
-      :class="!isValid && 'input__field--error'"
+      :class="!isValid && 'radio__item--error'"
       class="radio__item"
     >
       {{ placeholder }}
@@ -37,10 +37,10 @@ export default Vue.extend({
     },
   },
   data: () => ({
-    uniqueID: new Date().getTime() + (Math.random() * 100000).toFixed(),
+    uniqueID: new Date().getTime() + (Math.random() * 100000).toFixed() as string,
   }),
   methods: {
-    emitData(value) {
+    emitData(value: string) {
       this.$emit(
         'input',
         value,
@@ -113,6 +113,19 @@ export default Vue.extend({
       transition: .3s;
       visibility: hidden;
       width: 3px;
+    }
+
+    &--error {
+      border: 2px solid $cRed01;
+      color: $cRed01;
+
+      &::before {
+        border: 2px solid $cRed01;
+      }
+
+      &::after {
+        background-color: $cRed01;
+      }
     }
   }
 }

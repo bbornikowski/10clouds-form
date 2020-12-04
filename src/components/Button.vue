@@ -1,5 +1,5 @@
 <template>
-  <button class="button">
+  <button @click="emitClick" type="button" class="button">
     <slot />
   </button>
 </template>
@@ -9,6 +9,11 @@ import Vue from 'vue';
 
 export default Vue.extend({
   name: 'Button',
+  methods: {
+    emitClick() {
+      this.$emit('click');
+    },
+  },
 });
 </script>
 

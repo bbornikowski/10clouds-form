@@ -5,6 +5,7 @@
   >
     <input
       :value="value"
+      :placeholder="placeholder"
       :class="[
         fullBorder && 'select__field--fullBorder',
         !isValid && 'select__field--error',
@@ -49,7 +50,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    emitData(value) {
+    emitData(value: string) {
       this.$emit(
         'input',
         value,
@@ -115,7 +116,7 @@ export default Vue.extend({
       }
     }
 
-     &--fullBorder {
+    &--fullBorder {
       padding: 16px 14px 14px;
       border: 2px solid $cGray01;
 
@@ -123,7 +124,7 @@ export default Vue.extend({
         top: 22px;
       }
 
-      &#{$p}--error {
+      &#{$p}__field--error {
         border: 2px solid $cRed01;
         color: $cRed01;
 

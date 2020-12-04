@@ -48,6 +48,7 @@
           <Select
             v-model="formData.mobile.code"
             :custom-width="114"
+            :placeholder="'Code'"
             :is-valid="validated ? valid : true"
             :list="[
               '+48 (PL)',
@@ -153,6 +154,7 @@
           <Select
             v-model="formData.birth.month"
             :is-valid="validated ? valid : true"
+            :placeholder="'Month'"
             :full-border="true"
             :list="[
               'January',
@@ -225,15 +227,19 @@ export default Vue.extend({
   },
   computed: {
     dateError() {
-      if (!Object.keys(this.$parent.fields).length) return false;
-
       if (
-        !this.$parent.fields.day.validated
-        && !this.$parent.fields.month.validated
-        && !this.$parent.fields.year.validated
+        this.$parent.fields === undefined
+        || !Object.keys(this.$parent.fields).length
       ) return false;
 
       const { day, month, year } = this.$parent.errors;
+
+      if (
+        !(day && month && year)
+        || this.$parent.fields.day.validated === undefined
+        || this.$parent.fields.month.validated === undefined
+        || this.$parent.fields.year.validated === undefined
+      ) return false;
 
       if (
         day.length === 0
@@ -248,11 +254,7 @@ export default Vue.extend({
     radioButtons: [
       'Yes',
       'No',
-    ],
+    ] as Array<string>,
   }),
 });
 </script>
-
-<style lang="scss" scoped>
-
-</style>

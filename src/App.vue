@@ -24,15 +24,29 @@
           class="registerForm__formContent"
           @submit.prevent="handleSubmit(onSubmit)"
         >
+          <StepOne
+            v-if="currentStep === 0"
+            :formData="stepOne"
+          >
+            {{ 'First step' }}
+          </StepOne>
+
           <StepTwo
-            v-if="currentStep === 2"
+            v-else-if="currentStep === 1"
             :formData="stepTwo"
           >
             {{ 'Provide personal information so that we can create a new account for you.' }}
           </StepTwo>
 
+          <StepThree
+            v-else-if="currentStep === 2"
+            :formData="stepThree"
+          >
+            {{ 'Third step' }}
+          </StepThree>
+
           <div class="registerForm__formButton">
-            <Button>
+            <Button @click="nextStep(currentStep + 1)">
               {{ 'Continue' }}
             </Button>
           </div>
@@ -47,46 +61,64 @@ import Vue from 'vue';
 import { ValidationObserver } from 'vee-validate';
 
 import Heading from '@/components/Heading.vue';
+import StepOne from '@/sections/form/Step1.vue';
 import StepTwo from '@/sections/form/Step2.vue';
+import StepThree from '@/sections/form/Step3.vue';
 import Button from '@/components/Button.vue';
+
+import FormStepTwo from '@/interfaces/StepTwo';
 
 export default Vue.extend({
   name: 'App',
   components: {
     ValidationObserver,
     Heading,
+    StepOne,
     StepTwo,
+    StepThree,
     Button,
   },
   data: () => ({
-    currentStep: 2,
+    stepsList: [
+      'Step One',
+      'Personal',
+      'Step Three',
+    ] as Array<string>,
+    currentStep: 0 as number,
+    stepOne: {
+      chess: undefined,
+    } as Record<string, string>,
     stepTwo: {
       name: undefined,
       chess: undefined,
       mobile: {
-        code: '+48 (PL)',
+        code: undefined,
         number: undefined,
       },
       birth: {
         day: undefined,
-        month: 'January',
+        month: undefined,
         year: undefined,
       },
-    },
+    } as FormStepTwo,
+    stepThree: {
+      name: undefined,
+    } as Record<string, string>,
   }),
-  watch: {
-    stepTwo: {
-      handler(newVal) {
-        // console.log(this.$refs.observer.errors.day);
-        // console.log(this.$refs.observer.errors.month);
-        // console.log(this.$refs.observer.errors.year);
-      },
-      deep: true,
-    },
-  },
   methods: {
+    async nextStep(step) {
+      await this.$refs.observer.validate().then((isValid) => {
+        if (isValid) {
+          if (step > 2) {
+            this.onSubmit();
+          } else {
+            this.currentStep += 1;
+          }
+        }
+      });
+    },
     onSubmit() {
-      // console.log('submit');
+      console.log('sendData');
     },
   },
 });
@@ -112,6 +144,19 @@ export default Vue.extend({
     position: absolute;
     top: 0;
     width: 100%;
+
+    @include rwd('tablet') {
+      background-size: 150% 150%;
+      background-position: 70% 65%;
+    }
+
+    @include rwd('small-tablet') {
+      background-position: 70% 100%;
+    }
+
+    @include rwd('large-phone') {
+      background-position: 70% 130%;
+    }
   }
 
   &__heading {
