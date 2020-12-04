@@ -1,26 +1,28 @@
 <template>
   <div
-    :class=" hyphenPosition && `input--hyphen input--${hyphenPosition}`"
+    :class="hyphenPosition && `input--hyphen input--${hyphenPosition}`"
     :style="width"
     class="input"
   >
     <input
       @input="emitData"
       :value="value"
-      :class="fullBorder && 'input__field--fullBorder'"
+      :name="name"
       :placeholder="placeholder"
+      :class="[
+        fullBorder && 'input__field--fullBorder',
+        !isValid && 'input__field--error',
+      ]"
       size="1"
       type="text"
       class="input__field"
-      name="firstName"
-      required
     >
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import Field from '@/mixins/Field';
+import Field from '@/data/Field';
 
 export default Vue.extend({
   name: 'Input',
@@ -29,6 +31,14 @@ export default Vue.extend({
     hyphenPosition: {
       type: String,
       default: undefined,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    isValid: {
+      type: Boolean,
+      default: true,
     },
   },
   methods: {
@@ -51,10 +61,10 @@ export default Vue.extend({
   color: $cDark01;
   flex-direction: column;
   font-size: 16px;
+  flex-grow: 1;
   line-height: 13px;
   margin-top: 12px;
   position: relative;
-  width: 100%;
 
   &--hyphen {
     &::before {
@@ -94,12 +104,30 @@ export default Vue.extend({
       border-bottom: 2px solid $cBlue01;
     }
 
+    &--error {
+      border-bottom: 2px solid $cRed01;
+      color: $cRed01;
+
+      &::placeholder {
+        color: $cRed01;
+      }
+    }
+
     &--fullBorder {
       padding: 16px 14px 14px;
       border: 2px solid $cGray01;
 
       &:focus {
         border: 2px solid $cBlue01;
+      }
+
+      &#{$p}--error {
+        border: 2px solid $cRed01;
+        color: $cRed01;
+
+        &::placeholder {
+          color: $cRed01;
+        }
       }
     }
   }

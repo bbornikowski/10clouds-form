@@ -1,14 +1,19 @@
 <template>
-  <div class="select">
+  <div
+    class="select"
+    :style="width"
+  >
     <input
       :value="value"
-      :class="fullBorder && 'select__field--fullBorder'"
+      :class="[
+        fullBorder && 'select__field--fullBorder',
+        !isValid && 'select__field--error',
+      ]"
       type="text"
       autocomplete="off"
       class="select__field"
-      name="country"
+      name="code"
       size="5"
-      required
     >
 
     <ul class="select__list">
@@ -28,7 +33,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Field from '@/mixins/Field';
+import Field from '@/data/Field';
 
 export default Vue.extend({
   name: 'Select',
@@ -37,6 +42,10 @@ export default Vue.extend({
     list: {
       type: Array,
       required: true,
+    },
+    isValid: {
+      type: Boolean,
+      default: true,
     },
   },
   methods: {
@@ -97,12 +106,30 @@ export default Vue.extend({
       }
     }
 
+    &--error {
+      border-bottom: 2px solid $cRed01;
+      color: $cRed01;
+
+      &::placeholder {
+        color: $cRed01;
+      }
+    }
+
      &--fullBorder {
       padding: 16px 14px 14px;
       border: 2px solid $cGray01;
 
       & ~ #{$p}__dropdownIcon {
         top: 22px;
+      }
+
+      &#{$p}--error {
+        border: 2px solid $cRed01;
+        color: $cRed01;
+
+        &::placeholder {
+          color: $cRed01;
+        }
       }
     }
   }

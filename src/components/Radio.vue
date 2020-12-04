@@ -7,9 +7,10 @@
     >
 
     <label
-      :for="uniqueID"
-      class="radio__item"
       @click="emitData(placeholder)"
+      :for="uniqueID"
+      :class="!isValid && 'input__field--error'"
+      class="radio__item"
     >
       {{ placeholder }}
     </label>
@@ -30,6 +31,10 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    isValid: {
+      type: Boolean,
+      default: true,
+    },
   },
   data: () => ({
     uniqueID: new Date().getTime() + (Math.random() * 100000).toFixed(),
@@ -49,6 +54,7 @@ export default Vue.extend({
 
 .radio {
   display: flex;
+  flex-direction: column;
   margin: 12px 26px 0 0;
 
   input {
@@ -71,6 +77,7 @@ export default Vue.extend({
   }
 
   &__item {
+    align-self: flex-start;
     border: 2px solid $cGray01;
     color: $cDark03;
     cursor: pointer;

@@ -1,5 +1,10 @@
 <template>
-  <section class="registerForm">
+  <ValidationObserver
+    v-slot="{ handleSubmit }"
+    tag="section"
+    ref="observer"
+    class="registerForm"
+  >
     <div class="registerForm__formWrapper">
       <div class="registerForm__heading">
         <Heading>
@@ -15,135 +20,47 @@
           >
         </div>
 
-        <div class="registerForm__formContent">
-          <p class="registerForm__formTitle">
+        <form
+          class="registerForm__formContent"
+          @submit.prevent="handleSubmit(onSubmit)"
+        >
+          <StepTwo
+            v-if="currentStep === 2"
+            :formData="stepTwo"
+          >
             {{ 'Provide personal information so that we can create a new account for you.' }}
-          </p>
+          </StepTwo>
 
-          <div class="registerForm__formField">
-            <label class="registerForm__formPlaceholder">
-              {{ 'Your name' }}
-            </label>
-
-            <Input
-              v-model="formData.name"
-              :placeholder="'Name'"
-            />
+          <div class="registerForm__formButton">
+            <Button>
+              {{ 'Continue' }}
+            </Button>
           </div>
-
-          <div class="registerForm__formField">
-            <label class="registerForm__formPlaceholder">
-              {{ 'Mobile' }}
-            </label>
-
-            <div class="registerForm__formRow">
-              <Select
-                v-model="formData.mobile.code"
-                :list="[
-                  '+48 (PL)',
-                  '+49 (DE)',
-                ]"
-              />
-
-              <Input
-                v-model="formData.mobile.number"
-                :placeholder="'Mobile'"
-              />
-            </div>
-          </div>
-
-          <div class="registerForm__formField">
-            <label class="registerForm__formPlaceholder">
-              {{ 'Can you play chess' }}
-            </label>
-
-            <Radio
-              v-model="formData.chess"
-              :name="'ifChess'"
-              :placeholder="'Yes'"
-            />
-
-            <Radio
-              v-model="formData.chess"
-              :name="'ifChess'"
-              :placeholder="'No'"
-            />
-          </div>
-
-          <div class="registerForm__formField">
-            <label class="registerForm__formPlaceholder">
-              {{ 'Date of birth' }}
-            </label>
-
-            <div class="registerForm__formRow">
-              <Input
-                v-model="formData.birth.day"
-                :full-border="true"
-                :use-hyphen="true"
-                :hyphen-position="'right'"
-                :custom-width="50"
-                :placeholder="'01'"
-              />
-
-              <Select
-                v-model="formData.birth.month"
-                :full-border="true"
-                :list="[
-                  'January',
-                  'February',
-                  'March',
-                  'April',
-                  'May',
-                  'June',
-                  'July',
-                  'August',
-                  'September',
-                  'October',
-                  'November',
-                  'December',
-                ]"
-              />
-
-              <Input
-                v-model="formData.birth.year"
-                :full-border="true"
-                :hyphen-position="'left'"
-                :custom-width="144"
-                :placeholder="'1990'"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="registerForm__formButton">
-          <Button>
-            {{ 'Continue' }}
-          </Button>
-        </div>
+        </form>
       </div>
     </div>
-  </section>
+  </ValidationObserver>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { ValidationObserver } from 'vee-validate';
+
 import Heading from '@/components/Heading.vue';
-import Input from '@/components/Input.vue';
-import Radio from '@/components/Radio.vue';
-import Select from '@/components/Select.vue';
+import StepTwo from '@/sections/form/Step2.vue';
 import Button from '@/components/Button.vue';
 
 export default Vue.extend({
   name: 'App',
   components: {
+    ValidationObserver,
     Heading,
-    Input,
-    Radio,
-    Select,
+    StepTwo,
     Button,
   },
   data: () => ({
-    formData: {
+    currentStep: 2,
+    stepTwo: {
       name: undefined,
       chess: undefined,
       mobile: {
@@ -158,17 +75,24 @@ export default Vue.extend({
     },
   }),
   watch: {
-    formData: {
+    stepTwo: {
       handler(newVal) {
-        console.log(newVal);
+        // console.log(this.$refs.observer.errors.day);
+        // console.log(this.$refs.observer.errors.month);
+        // console.log(this.$refs.observer.errors.year);
       },
       deep: true,
+    },
+  },
+  methods: {
+    onSubmit() {
+      // console.log('submit');
     },
   },
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 .registerForm {
   align-items: center;
@@ -198,13 +122,14 @@ export default Vue.extend({
   }
 
   &__formWrapper {
-    max-width: 728px;
+    max-width: 778px;
     position: relative;
     width: 100%;
   }
 
   &__form {
     display: flex;
+    justify-content: center;
     width: 100%;
   }
 
@@ -212,6 +137,10 @@ export default Vue.extend({
     display: flex;
     max-width: 256px;
     width: 100%;
+
+    @include rwd('tablet') {
+      display: none;
+    }
 
     img {
       height: 100%;
@@ -257,7 +186,15 @@ export default Vue.extend({
 
   &__formRow {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
+  }
+
+  &__formColumn {
+    & + & {
+      flex-grow: 1;
+      margin-left: 20px;
+    }
   }
 
   &__formPlaceholder {
@@ -268,10 +205,20 @@ export default Vue.extend({
     width: 100%;
   }
 
+  &__fieldError {
+    color: $cRed01;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 11px;
+    margin-top: 5px;
+    padding: 0 14px;
+    width: 100%;
+  }
+
   &__formButton {
     bottom: -25px;
     position: absolute;
-    right: 50px;
+    right: 0;
   }
 }
 
