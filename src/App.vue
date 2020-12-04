@@ -151,7 +151,7 @@ export default Vue.extend({
   flex-direction: column;
   justify-content: center;
   padding: 0 14px;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
 
   &::before {
@@ -192,6 +192,7 @@ export default Vue.extend({
 
   &__formWrapper {
     max-width: 778px;
+    padding: 86px 0;
     position: relative;
     width: 100%;
 
