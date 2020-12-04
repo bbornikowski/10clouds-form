@@ -36,10 +36,6 @@ export default Vue.extend({
       type: String,
       required: true,
     },
-    isValid: {
-      type: Boolean,
-      default: true,
-    },
   },
   methods: {
     emitData({ target: { value } }) {

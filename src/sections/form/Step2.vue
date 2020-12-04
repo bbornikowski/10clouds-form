@@ -1,6 +1,6 @@
 <template>
   <Fragment>
-    <p class="registerForm__formTitle">
+    <p class="register__formTitle">
       <slot />
     </p>
 
@@ -10,9 +10,9 @@
       name="firstName"
       mode="passive"
       tag="div"
-      class="registerForm__formField"
+      class="register__formField"
     >
-      <label class="registerForm__formPlaceholder">
+      <label class="register__formPlaceholder">
         {{ 'Your name' }}
       </label>
 
@@ -24,25 +24,25 @@
       />
 
       <p
-        class="registerForm__fieldError"
+        class="register__fieldError"
         v-if="errors[0]"
       >
         {{ errors[0] }}
       </p>
     </ValidationProvider>
 
-    <div class="registerForm__formField">
-      <label class="registerForm__formPlaceholder">
+    <div class="register__formField">
+      <label class="register__formPlaceholder">
         {{ 'Mobile' }}
       </label>
 
-      <div class="registerForm__formRow">
+      <div class="register__formRow">
         <ValidationProvider
           v-slot="{ errors, valid, validated }"
           rules="required"
           name="code"
           mode="passive"
-          class="registerForm__formColumn"
+          class="register__formColumn"
           tag="div"
         >
           <Select
@@ -57,7 +57,7 @@
           />
 
           <p
-            class="registerForm__fieldError"
+            class="register__fieldError"
             v-if="errors[0]"
           >
             {{ errors[0] }}
@@ -69,7 +69,7 @@
           rules="required|numeric|length:9"
           name="mobile"
           mode="passive"
-          class="registerForm__formColumn"
+          class="register__formColumn"
           tag="div"
         >
           <Input
@@ -80,7 +80,7 @@
           />
 
           <p
-            class="registerForm__fieldError"
+            class="register__fieldError"
             v-if="errors[0]"
           >
             {{ errors[0] }}
@@ -95,9 +95,9 @@
       name="ifChess"
       mode="passive"
       tag="div"
-      class="registerForm__formField"
+      class="register__formField"
     >
-      <label class="registerForm__formPlaceholder">
+      <label class="register__formPlaceholder">
         {{ 'Can you play chess' }}
       </label>
 
@@ -111,19 +111,19 @@
       />
 
       <p
-        class="registerForm__fieldError"
+        class="register__fieldError"
         v-if="errors[0]"
       >
         {{ errors[0] }}
       </p>
     </ValidationProvider>
 
-    <div class="registerForm__formField">
-      <label class="registerForm__formPlaceholder">
+    <div class="register__formField">
+      <label class="register__formPlaceholder">
         {{ 'Date of birth' }}
       </label>
 
-      <div class="registerForm__formRow">
+      <div class="register__formRow">
         <ValidationProvider
           v-slot="{ errors, valid, validated }"
           rules="required|numeric|date:@month"
@@ -192,7 +192,7 @@
         </ValidationProvider>
 
         <p
-          class="registerForm__fieldError"
+          class="register__fieldError"
           v-if="dateError"
         >
           {{ 'Date is invalid' }}
@@ -225,6 +225,12 @@ export default Vue.extend({
       type: Object,
     },
   },
+  data: () => ({
+    radioButtons: [
+      'Yes',
+      'No',
+    ] as Array<string>,
+  }),
   computed: {
     dateError() {
       if (
@@ -250,11 +256,5 @@ export default Vue.extend({
       return true;
     },
   },
-  data: () => ({
-    radioButtons: [
-      'Yes',
-      'No',
-    ] as Array<string>,
-  }),
 });
 </script>

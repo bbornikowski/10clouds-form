@@ -3,17 +3,17 @@
     v-slot="{ handleSubmit }"
     tag="section"
     ref="observer"
-    class="registerForm"
+    class="register"
   >
-    <div class="registerForm__formWrapper">
-      <div class="registerForm__heading">
+    <div class="register__formWrapper">
+      <div class="register__heading">
         <Heading>
           {{ 'Your account' }}
         </Heading>
       </div>
 
-      <div class="registerForm__form">
-        <div class="registerForm__formBanner">
+      <div class="register__form">
+        <div class="register__formBanner">
           <img
             src="images/banner.jpg"
             alt="banner"
@@ -21,7 +21,7 @@
         </div>
 
         <form
-          class="registerForm__formContent"
+          class="register__formContent"
           @submit.prevent="handleSubmit(onSubmit)"
         >
           <StepOne
@@ -45,12 +45,17 @@
             {{ 'Third step' }}
           </StepThree>
 
-          <div class="registerForm__formButton">
+          <div class="register__formButton">
             <Button @click="nextStep(currentStep + 1)">
-              {{ 'Continue' }}
+              {{ formButton }}
             </Button>
           </div>
         </form>
+
+        <FormNav
+            :active="currentStep"
+            :list="stepsList"
+          />
       </div>
     </div>
   </ValidationObserver>
@@ -64,9 +69,14 @@ import Heading from '@/components/Heading.vue';
 import StepOne from '@/sections/form/Step1.vue';
 import StepTwo from '@/sections/form/Step2.vue';
 import StepThree from '@/sections/form/Step3.vue';
+import FormNav from '@/sections/form/Nav.vue';
 import Button from '@/components/Button.vue';
 
-import FormStepTwo from '@/interfaces/StepTwo';
+import {
+  IStepOne,
+  IStepTwo,
+  IStepThree,
+} from '@/interfaces/Form';
 
 export default Vue.extend({
   name: 'App',
@@ -76,6 +86,7 @@ export default Vue.extend({
     StepOne,
     StepTwo,
     StepThree,
+    FormNav,
     Button,
   },
   data: () => ({
@@ -84,10 +95,10 @@ export default Vue.extend({
       'Personal',
       'Step Three',
     ] as Array<string>,
-    currentStep: 0 as number,
+    currentStep: 1 as number,
     stepOne: {
       chess: undefined,
-    } as Record<string, string>,
+    } as IStepOne,
     stepTwo: {
       name: undefined,
       chess: undefined,
@@ -100,11 +111,18 @@ export default Vue.extend({
         month: undefined,
         year: undefined,
       },
-    } as FormStepTwo,
+    } as IStepTwo,
     stepThree: {
       name: undefined,
-    } as Record<string, string>,
+    } as IStepThree,
   }),
+  computed: {
+    formButton() {
+      return this.currentStep === 2
+        ? 'Send'
+        : 'Continue';
+    },
+  },
   methods: {
     async nextStep(step) {
       await this.$refs.observer.validate().then((isValid) => {
@@ -126,12 +144,13 @@ export default Vue.extend({
 
 <style lang="scss">
 
-.registerForm {
+.register {
   align-items: center;
   background-color: $cDark02;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 0 14px;
   height: 100vh;
   width: 100%;
 
@@ -170,12 +189,23 @@ export default Vue.extend({
     max-width: 778px;
     position: relative;
     width: 100%;
+
+    @include rwd('tablet') {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__form {
     display: flex;
     justify-content: center;
+    position: relative;
     width: 100%;
+
+    @include rwd('tablet') {
+      width: auto;
+    }
   }
 
   &__formBanner {
@@ -202,6 +232,21 @@ export default Vue.extend({
     padding: 40px 50px 67px;
     position: relative;
 
+    @include rwd('large-tablet') {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+    @include rwd('large-phone') {
+      padding-left: 16px;
+      padding-right: 16px;
+      padding-top: 16px;
+    }
+
+    @include rwd('small-tablet') {
+      margin-right: 0;
+    }
+
     &::before {
       background-color: $cGreen01;
       content: '';
@@ -220,6 +265,10 @@ export default Vue.extend({
     line-height: 24px;
     padding-bottom: 48px;
     padding-right: 50px;
+
+    @include rwd('small-tablet') {
+      padding-bottom: 18px;
+    }
   }
 
   &__formField {
@@ -264,6 +313,13 @@ export default Vue.extend({
     bottom: -25px;
     position: absolute;
     right: 0;
+
+    @include rwd('small-tablet') {
+      left: 50%;
+      margin-left: -25px;
+      right: unset;
+      transform: translateX(-50%);
+    }
   }
 }
 

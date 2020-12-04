@@ -28,7 +28,7 @@
       </li>
     </ul>
 
-    <span class="select__dropdownIcon icon icon-arrow"></span>
+    <span class="select__dropdownIcon icon icon-arrow" />
   </div>
 </template>
 
@@ -43,10 +43,6 @@ export default Vue.extend({
     list: {
       type: Array,
       required: true,
-    },
-    isValid: {
-      type: Boolean,
-      default: true,
     },
   },
   methods: {

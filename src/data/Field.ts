@@ -15,6 +15,10 @@ export default {
       type: Number,
       default: undefined,
     },
+    isValid: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     width() {

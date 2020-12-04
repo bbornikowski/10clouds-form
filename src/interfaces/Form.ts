@@ -1,4 +1,8 @@
-interface FormStepTwo {
+interface IStepOne {
+  chess: string;
+}
+
+interface IStepTwo {
   name: string;
   chess: string;
   mobile: {
@@ -12,4 +16,12 @@ interface FormStepTwo {
   },
 }
 
-export default FormStepTwo;
+interface IStepThree {
+  name: string;
+}
+
+export {
+  IStepOne,
+  IStepTwo,
+  IStepThree,
+};

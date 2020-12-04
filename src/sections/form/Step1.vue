@@ -1,6 +1,6 @@
 <template>
   <Fragment>
-    <p class="registerForm__formTitle">
+    <p class="register__formTitle">
       <slot />
     </p>
 
@@ -10,9 +10,9 @@
       name="chessStepOne"
       mode="passive"
       tag="div"
-      class="registerForm__formField"
+      class="register__formField"
     >
-      <label class="registerForm__formPlaceholder">
+      <label class="register__formPlaceholder">
         {{ 'Can you play chess' }}
       </label>
 
@@ -26,7 +26,7 @@
       />
 
       <p
-        class="registerForm__fieldError"
+        class="register__fieldError"
         v-if="errors[0]"
       >
         {{ errors[0] }}
