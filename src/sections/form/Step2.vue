@@ -154,22 +154,11 @@
           <Select
             v-model="formData.birth.month"
             :is-valid="validated ? valid : true"
-            :placeholder="'Month'"
+            :placeholder="getMonthPlaceholder"
+            :custom-width="getMonthWidth"
             :full-border="true"
-            :list="[
-              'January',
-              'February',
-              'March',
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December',
-            ]"
+            :is-small="true"
+            :list="getMonthList"
           />
         </ValidationProvider>
 
@@ -226,12 +215,53 @@ export default Vue.extend({
     },
   },
   data: () => ({
+    windowWidth: window.innerWidth,
     radioButtons: [
       'Yes',
       'No',
     ] as Array<string>,
   }),
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener(
+        'resize',
+        () => {
+          this.windowWidth = window.innerWidth;
+        },
+      );
+    });
+  },
   computed: {
+    getMonthList() {
+      const months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ];
+
+      return this.windowWidth > 600
+        ? months
+        : Array.from({ length: 12 }, (_, i) => i + 1);
+    },
+    getMonthPlaceholder() {
+      return this.windowWidth > 600
+        ? 'Month'
+        : 'M';
+    },
+    getMonthWidth() {
+      return this.windowWidth > 600
+        ? undefined
+        : 50;
+    },
     dateError() {
       if (
         this.$parent.fields === undefined

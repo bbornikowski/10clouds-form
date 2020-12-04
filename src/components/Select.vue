@@ -8,6 +8,7 @@
       :placeholder="placeholder"
       :class="[
         fullBorder && 'select__field--fullBorder',
+        isSmall && 'select__field--small',
         !isValid && 'select__field--error',
       ]"
       type="text"
@@ -40,6 +41,10 @@ export default Vue.extend({
   name: 'Select',
   mixins: [Field],
   props: {
+    isSmall: {
+      type: Boolean,
+      default: false,
+    },
     list: {
       type: Array,
       required: true,
@@ -103,6 +108,16 @@ export default Vue.extend({
       }
     }
 
+    &--small {
+      min-width: auto;
+
+      @include rwd('small-tablet') {
+        & ~ #{$p}__dropdownIcon {
+          right: 6px;
+        }
+      }
+    }
+
     &--error {
       border-bottom: 2px solid $cRed01;
       color: $cRed01;
@@ -117,7 +132,7 @@ export default Vue.extend({
       border: 2px solid $cGray01;
 
       & ~ #{$p}__dropdownIcon {
-        top: 22px;
+        top: 24px;
       }
 
       &#{$p}__field--error {

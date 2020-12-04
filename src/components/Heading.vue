@@ -20,6 +20,12 @@ export default Vue.extend({
   font-weight: 300;
   line-height: 48px;
   margin-bottom: 48px;
+
+  @include rwd('tablet') {
+    font-size: 36px;
+    line-height: 42px;
+    margin-bottom: 28px;
+  }
 }
 
 </style>

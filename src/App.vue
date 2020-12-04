@@ -136,7 +136,7 @@ export default Vue.extend({
       });
     },
     onSubmit() {
-      console.log('sendData');
+      // send data
     },
   },
 });
@@ -183,6 +183,11 @@ export default Vue.extend({
     margin-left: auto;
     max-width: 472px;
     padding-left: 50px;
+
+    @include rwd('small-tablet') {
+      padding-left: 0;
+      text-align: center;
+    }
   }
 
   &__formWrapper {
@@ -268,6 +273,7 @@ export default Vue.extend({
 
     @include rwd('small-tablet') {
       padding-bottom: 18px;
+      padding-right: 0;
     }
   }
 
