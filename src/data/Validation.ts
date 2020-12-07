@@ -49,10 +49,10 @@ extend('year', {
 extend('check18', {
   params: ['day', 'month'],
   message: () => 'You need to be 18 years old',
-  validate(year: string, { day, month }) {
+  validate(year: string, { day, month }: { day: string; month: string }) {
     const birthday = new Date(`${month} ${day}, ${year}`);
     const birthdayMonth = birthday.getMonth();
-    const is18 = new Date(parseInt(year, 10) + 18, birthdayMonth, day) <= new Date();
+    const is18 = new Date(parseInt(year, 10) + 18, birthdayMonth, parseInt(day, 10)) <= new Date();
 
     return is18;
   },
