@@ -6,7 +6,7 @@
   >
     <input
       @input="emitData"
-      :value="value"
+      :value="reformatMobile ? mobileNumber : value"
       :name="name"
       :placeholder="placeholder"
       :class="[
@@ -35,6 +35,17 @@ export default Vue.extend({
     name: {
       type: String,
       required: true,
+    },
+    reformatMobile: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    mobileNumber() {
+      if (!this.value) return this.value;
+
+      return this.value.replace(/\s/g, '').match(/.{1,3}/g).join(' ');
     },
   },
   methods: {

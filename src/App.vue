@@ -116,6 +116,14 @@ export default Vue.extend({
       name: undefined,
     } as IStepThree,
   }),
+  watch: {
+    'stepTwo.mobile.number': {
+      handler(newVal) {
+        this.stepTwo.mobile.number = newVal.replace(/\s/g, '');
+      },
+      deep: true,
+    },
+  },
   computed: {
     formButton() {
       return this.currentStep === 2
@@ -327,6 +335,10 @@ export default Vue.extend({
       right: unset;
       transform: translateX(-50%);
     }
+  }
+
+  &__row {
+    width: 100%;
   }
 }
 

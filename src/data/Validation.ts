@@ -5,19 +5,22 @@ import {
 
 extend('min', {
   ...min,
+  message: 'Invalid length',
 });
 
 extend('length', {
   ...length,
+  message: 'Invalid length',
 });
 
 extend('numeric', {
   ...numeric,
+  message: 'This field can only contain digits',
 });
 
 extend('email', {
   ...email,
-  message: 'Invalid data',
+  message: 'Email is invalid',
 });
 
 extend('required', {
@@ -29,9 +32,35 @@ extend('confirmed', {
   ...confirmed,
 });
 
+extend('year', {
+  message: () => 'Year is invalid',
+  validate(value: string) {
+    const year = parseInt(value, 10);
+
+    if (
+      year >= 1920
+      && year <= 2020
+    ) return true;
+
+    return false;
+  },
+});
+
+extend('check18', {
+  params: ['day', 'month'],
+  message: () => 'You need to be 18 years old',
+  validate(year: string, { day, month }) {
+    const birthday = new Date(`${month} ${day}, ${year}`);
+    const birthdayMonth = birthday.getMonth();
+    const is18 = new Date(parseInt(year, 10) + 18, birthdayMonth, day) <= new Date();
+
+    return is18;
+  },
+});
+
 extend('date', {
   params: ['target'],
-  message: () => 'Date is invalid',
+  message: () => 'Date is invalid.',
   validate(value: string, { target }: Record<string, string>) {
     const day = parseInt(value, 10);
 

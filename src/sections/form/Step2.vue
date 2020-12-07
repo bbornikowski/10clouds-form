@@ -77,6 +77,7 @@
             :is-valid="validated ? valid : true"
             :placeholder="'Mobile'"
             :name="'mobile'"
+            :reformat-mobile="true"
           />
 
           <p
@@ -164,7 +165,10 @@
 
         <ValidationProvider
           v-slot="{ errors, valid, validated }"
-          rules="required|numeric"
+          :rules="{
+            required: true, numeric: true, year: true, check18: { day: '@day', month: '@month'}
+          }"
+          vid="year"
           name="year"
           mode="passive"
           slim
@@ -180,12 +184,18 @@
           />
         </ValidationProvider>
 
-        <p
-          class="register__fieldError"
+        <div
           v-if="dateError"
+          class="register__row"
         >
-          {{ 'Date is invalid' }}
-        </p>
+          <p
+            class="register__fieldError"
+            v-for="(error, index) in dateErrors"
+            :key="index"
+          >
+            {{ error }}
+          </p>
+        </div>
       </div>
     </div>
   </Fragment>
@@ -215,6 +225,7 @@ export default Vue.extend({
     },
   },
   data: () => ({
+    dateErrors: [],
     windowWidth: window.innerWidth,
     radioButtons: [
       'Yes',
@@ -283,7 +294,22 @@ export default Vue.extend({
         && year.length === 0
       ) return false;
 
+      this.addErrors([day, month, year]);
+
       return true;
+    },
+  },
+  methods: {
+    addErrors(errors) {
+      this.dateErrors = [];
+
+      errors.forEach((error) => {
+        if (error.length > 0) {
+          this.dateErrors.push(...error);
+        }
+      });
+
+      this.dateErrors = [...new Set(this.dateErrors)];
     },
   },
 });
